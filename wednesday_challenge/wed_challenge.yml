@@ -1,0 +1,29 @@
+---
+  - name: Wednesday Challenege Playbook
+    hosts: planetexpress:!farnsworth
+    become: yes
+    gather_facts: yes
+    vars_files:
+      - ../../vars/wed_challenge_names.yml
+
+    tasks:
+      - name: Create users from Names yml
+        user:
+          name: "{{ item }}"
+          state: present
+          shell: /bin/bash
+        loop: "{{ wednesday }}"
+
+          #  - name: Install figlet on all
+          #    hosts: planetexpress
+          #    become: yes
+
+          #    tasks:
+      - name: Install figlet
+        package:
+         name: figlet
+         state: present
+
+      - name: Completion message
+        debug:
+         msg: "I've completed the challenge!"
