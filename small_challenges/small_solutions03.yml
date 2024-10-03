@@ -1,0 +1,30 @@
+---
+- name: GET request to an API and extract value
+  hosts: planetexpress:!farnsworth
+  tasks:
+    - name: Send GET request to SWAPI
+      uri:
+        url: "https://swapi.dev/api/films/3"
+        method: GET
+        return_content: yes
+      register: api_response
+
+    - name: Extract the director from the JSON
+      set_fact:
+        film_director: "{{ api_response.content | from_json | json_query('director') }}"
+
+    - name: Save API to file
+      copy:
+          content: "{{ api_response.content }}"
+          dest: /tmp/swapi_director.json
+
+    - name: Copy file to target machine
+      fetch:
+        src: /tmp/swapi_director.json
+        dest: /tmp/swapi_director_remote.json
+        flat: yes
+
+    - name: Display the value
+      debug:
+        var: film_director
+

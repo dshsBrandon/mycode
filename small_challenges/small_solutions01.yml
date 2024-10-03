@@ -1,0 +1,15 @@
+---
+- name: GET request to an API
+  hosts: localhost
+  tasks:
+    - name: Send GET request to SWAPI
+      uri:
+        url: "https://swapi.dev/api/people/78/?format=wookiee"
+        method: GET
+        return_content: yes
+      register: api_response
+
+    - name: Display the API response
+      debug:
+        var: api_response.content
+

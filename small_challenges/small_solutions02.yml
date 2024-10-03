@@ -1,0 +1,22 @@
+---
+- name: GET request to an API and save to file
+  hosts: planetexpress:!farnsworth
+  tasks:
+    - name: Send GET request to SWAPI
+      uri:
+        url: "https://swapi.dev/api/films/5/?format=wookiee"
+        method: GET
+        return_content: yes
+      register: api_response
+
+    - name: Save API response to a file
+      copy:
+        content: "{{ api_response.content }}"
+        dest: /tmp/api_response.json
+
+    - name: Copy the file to target machines
+      fetch:
+        src: /tmp/api_response.json
+        dest: /tmp/swapi_responset.json
+        flat: yes
+
