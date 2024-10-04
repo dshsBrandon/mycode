@@ -1,0 +1,22 @@
+---
+- name: Copy file and use handler
+  hosts: fry
+  tasks:
+    - name: Copy congrats.txt to target
+      copy:
+        src: ~/mycode/files/congrats.txt
+        dest: congrats.txt
+      notify: Append line to file
+
+    - name: Force handler
+      meta: flush_handlers
+
+    - name: Display file contents
+      #command: cat congrats.txt
+      shell: cat congrats.txt
+
+  handlers:
+    - name: Append line to file
+      lineinfile:
+        path: congrats.txt
+        line: "New line added! Yay!"
