@@ -31,4 +31,4 @@ def create_file():
     print("admin.rc files created!")
 
 # If you need to call the function
-create_file()
+#create_file()
